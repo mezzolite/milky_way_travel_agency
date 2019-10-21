@@ -3,3 +3,4 @@ earth = Planet.new(name: "Earth", distance_from_sun: 92531871, atmosphere: "Brea
     It is a rocky, terrestrial planet, that has a solid and active surface with mountains, valleys, canyons, plains and so much more. 
     Earth is special because it is an ocean planet.")
 
+#Tatiana Test
