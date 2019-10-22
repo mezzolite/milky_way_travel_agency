@@ -5,6 +5,7 @@ class CreatePlanetsTable < ActiveRecord::Migration[6.0]
       t.integer :distance_from_sun
       t.string :atmosphere
       t.text :description
+      t.string :image
     end
   end
 end

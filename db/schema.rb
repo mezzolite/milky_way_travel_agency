@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 2019_10_21_212726) do
     t.integer "distance_from_sun"
     t.string "atmosphere"
     t.text "description"
+    t.string "image"
   end
 
   create_table "users", force: :cascade do |t|
