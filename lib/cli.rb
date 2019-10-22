@@ -19,13 +19,12 @@ def select_planet
 end
 
 def display_selected_planet(planet_name)
-    Planet.all.select do |planet|
+    planet = Planet.all.find do |planet|
         planet.name == planet_name
-        return planet
     end
         puts "
-        #{planet.image}
         Name: #{planet.name}
         Atmosphere: #{planet.atmosphere}
         Description: #{planet.description}"
+        system("imgcat ./lib/images/#{planet.image}")
 end
