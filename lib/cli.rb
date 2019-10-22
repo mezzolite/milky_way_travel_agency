@@ -6,7 +6,7 @@ end
 def planets_display
     puts "Here are all of the available destinations:"
     Planet.all.map do |planet|
-        planet.name
+        planet.name 
         puts planet.name
     end
 end
