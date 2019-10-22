@@ -1,0 +1,5 @@
+welcome
+
+planets_display
+
+select_planet

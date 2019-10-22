@@ -1,13 +1,13 @@
-earth = Planet.new(
+Planet.destroy_all
+
+earth = Planet.create(
   name: "Earth", 
   distance_from_sun: 92531871, 
   atmosphere: "Breathable", 
-  description: "Third planet from the Sun. Earth has one moon: Moon, and no rings. 
-    It is a rocky, terrestrial planet, that has a solid and active surface with mountains, valleys, canyons, plains and so much more. 
-    Earth is special because it is an ocean planet.",
-    image: "earth.jpg")
+  description: "Third planet from the Sun. Earth has one moon: Moon, and no rings. It is a rocky, terrestrial planet, that has a solid and active surface with mountains, valleys, canyons, plains and so much more. Earth is special because it is an ocean planet.",
+  image: "earth.jpg")
 
-jupiter = Planet.new(
+jupiter = Planet.create(
   name: "Jupiter", 
   distance_from_sun: 488293103, 
   atmosphere: "Gassy",
@@ -38,7 +38,6 @@ neptune = Planet.create(
   description: "Neptune is the eighth planet from the Sun. It is dark, cold, and very windy. It is made of a thick soup of water, ammonia, and methane. Neptune has six rings, but they're very hard to see.",
   image: "neptune.jpg"
 )
-
  
 mercury = Planet.create(
   name: "Mercury", 
