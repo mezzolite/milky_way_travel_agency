@@ -2,11 +2,13 @@ ActiveRecord::Base.logger = nil
 
 class Cli
 
-    attr_accessor :user_info, :selected_planet
+    attr_accessor :user_info, :selected_planet, :distance_total, :total_in_years
 
     def initialize
         @user_info = nil
         @selected_planet = nil
+        @distance_total = nil
+        @total_in_years = nil
     end
 
     def welcome
@@ -17,7 +19,8 @@ class Cli
         planets_display
         select_planet
         distance_from_selection
-        ending_options
+        display_travel_time
+        display_arrival_age
     end
 
     def planets_display
@@ -111,20 +114,58 @@ class Cli
     end
 
     def distance
-        total = destination_distance + current_distance
-        puts "Your total travel distance to #{destination_name} is #{total} miles. Please be aware that this is not a direct flight, and there will be a layover at the Sun."
+        @distance_total = destination_distance + current_distance
+        puts "Your total travel distance to #{destination_name} is #{distance_total} miles. Please be aware that this is not a direct flight, and there will be a layover at the Sun."
     end
 
 
     def distance_from_selection
         puts "Would you like to see the distance to your selection? Y/N"
         user_input = gets.chomp.downcase
-        if user_input == "y" || "yes"
+        if user_input == "y" || user_input == "yes"
             distance
         else
-        ending_options
+            ending_options
         end
     end
+
+    def travel_time
+        total_in_hours = distance_total / 80000
+        total_in_days = total_in_hours.to_f  / 24
+        @total_in_years = total_in_days.to_f / 365
+        puts "Your travel time would be #{total_in_days.round(1)} days or #{total_in_years.round(1)} years."
+    end
+
+    def display_travel_time
+        puts "Would you like to see the travel time to your selected planet? Y/N"
+        user_input = gets.chomp.downcase
+        if user_input == "y" || user_input == "yes"
+            travel_time
+        else
+            ending_options
+        end
+    end
+
+    def user_age
+        user_info.age
+    end
+
+    def display_arrival_age
+        puts "Would you like to know how old you'll be when you arrive on #{destination_name}? Y/N"
+        user_input = gets.chomp.downcase
+        if user_input == "y" || user_input == "yes"
+            if total_in_years.round == 0
+                puts "You will be #{user_age} years old."
+                ending_options
+            else
+                puts "You will be #{user_age * total_in_years.round} years old."
+                ending_options
+            end
+        else 
+            ending_options
+        end
+    end
+
 
     def user_id
         user_info.map do |user|
