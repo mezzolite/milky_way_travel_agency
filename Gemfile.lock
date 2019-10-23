@@ -12,6 +12,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.1, >= 2.1.8)
+    colorize (0.8.1)
     concurrent-ruby (1.1.5)
     i18n (1.7.0)
       concurrent-ruby (~> 1.0)
@@ -41,6 +42,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord (~> 6.0)
+  colorize (~> 0.8.1)
   require_all (~> 2.0)
   sinatra (~> 2.0)
   sinatra-activerecord (~> 2.0)

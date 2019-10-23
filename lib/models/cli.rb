@@ -13,18 +13,28 @@ class Cli
 
     def welcome
         system("clear")
-        puts "Welcome to the Milky Way Travel Agency!"
-        puts "Interstellar travel at your fingertips."
+        puts "*---*---o---*---~---o---~---*---o---*---*"
+        puts "--*---*---o---*---~---o---~---*---o---*--"
+        puts "Welcome to the Milky Way Travel Agency!".colorize(:magenta)
+        puts "Interstellar travel at your fingertips.".colorize(:light_red)
+        system("imgcat ./lib/images/background.jpg")
         user_intro
         planets_display
         select_planet
         distance_from_selection
+        puts ""
         display_travel_time
+        puts ""
         display_arrival_age
     end
 
     def planets_display
-        puts "Here are all of the available destinations:"
+        system("clear")
+        puts "Thank you!"
+        puts "*---*---o---*---~---o---~---*---o---*---*"
+        puts "--*---*---o---*---~---o---~---*---o---*--"
+        puts "Here are all of the available destinations:".colorize(:green)
+        puts ""
         Planet.all.map do |planet|
             planet.name 
             puts planet.name
@@ -40,22 +50,25 @@ class Cli
         if selected_planet
             display_selected_planet
         else  
-            puts "We currently do not offer travel to that destination. Please select from the above list."
+            puts "We currently do not offer travel to that destination. Please select from the above list.".colorize(:red)
             select_planet
         end
     end
 
     def display_selected_planet
-        # planet = Planet.where(name: planet_name).limit(1)[0]
-            puts "
-            Name: #{selected_planet.name}
-            Atmosphere: #{selected_planet.atmosphere}
-            Description: #{selected_planet.description}"
+            puts "Here is the information about your selection!".colorize(:blue)
+            puts ""
+            puts "Name: ".colorize(:light_blue) + "#{selected_planet.name}"
+            puts "Atmosphere: ".colorize(:light_blue) + "#{selected_planet.atmosphere}"
+            puts "Description: ".colorize(:light_blue) + "#{selected_planet.description}"
             system("imgcat ./lib/images/#{selected_planet.image}")
     end
 
     def ending_options
-        puts "What would you like to do now? Please select 1 or 2."
+        puts ""
+        puts "*---*---o---*---~---o---~---*---o---*---*"
+        puts "--*---*---o---*---~---o---~---*---o---*--"
+        puts "What would you like to do now? Please select 1 or 2.".colorize(:yellow)
         puts "1. Go back to Planet Menu."
         puts "2. Exit Travel Agency."
         user_input = gets.chomp
@@ -65,7 +78,9 @@ class Cli
             select_planet
             ending_options
         elsif user_input == "2"
-            puts "Thank you for visiting Milky Way Travel Agency. Good Bye!"
+            puts ""
+            puts ""
+            puts "Thank you for visiting Milky Way Travel Agency. Good Bye!".colorize(:magenta)
         else
             puts "Please make another selection."
         ending_options
@@ -73,7 +88,9 @@ class Cli
     end
 
     def user_intro
-        puts "Please tell us about yourself."
+        puts ""
+        puts "Please tell us about yourself.".colorize(:yellow)
+        puts ""
         puts "What is your name?"
         user_name = gets.chomp
         puts "How old are you?"
@@ -87,10 +104,11 @@ class Cli
         user_location = gets.chomp.capitalize
         solar_planets = Planet.find_by(name: user_location)
         if solar_planets
-            puts "Thank you!"
+            puts ""
             user_location
         else 
-            puts "Please enter a planet in the Solar System."
+            puts ""
+            puts "Please enter a planet in the Solar System.".colorize(:red)
             user_planet
         end
     end
@@ -115,11 +133,14 @@ class Cli
 
     def distance
         @distance_total = destination_distance + current_distance
-        puts "Your total travel distance to #{destination_name} is #{distance_total} miles. Please be aware that this is not a direct flight, and there will be a layover at the Sun."
+        puts "Your total travel distance to " + "#{destination_name}".colorize(:light_green) + " is " + "#{distance_total}".colorize(:green) + " miles. Please be aware that this is not a direct flight, and there will be a layover at the Sun."
     end
 
 
     def distance_from_selection
+        puts "*---*---o---*---~---o---~---*---o---*---*"
+        puts "--*---*---o---*---~---o---~---*---o---*--"
+        puts ""
         puts "Would you like to see the distance to your selection? Y/N"
         user_input = gets.chomp.downcase
         if user_input == "y" || user_input == "yes"
@@ -133,7 +154,7 @@ class Cli
         total_in_hours = distance_total / 80000
         total_in_days = total_in_hours.to_f  / 24
         @total_in_years = total_in_days.to_f / 365
-        puts "Your travel time would be #{total_in_days.round(1)} days or #{total_in_years.round(1)} years."
+        puts "Your travel time would be " + "#{total_in_days.round(1)}".colorize(:green) + " days or " + "#{total_in_years.round(1)}".colorize(:green) + " years."
     end
 
     def display_travel_time
@@ -155,10 +176,10 @@ class Cli
         user_input = gets.chomp.downcase
         if user_input == "y" || user_input == "yes"
             if total_in_years.round == 0
-                puts "You will be #{user_age} years old."
+                puts "You will be " + "#{user_age}".colorize(:green) + " years old."
                 ending_options
             else
-                puts "You will be #{user_age * total_in_years.round} years old."
+                puts "You will be " + "#{user_age * total_in_years.round}".colorize(:green) + " years old."
                 ending_options
             end
         else 
