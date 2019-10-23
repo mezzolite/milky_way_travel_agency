@@ -27,6 +27,7 @@ def select_planet
         puts "We currently do not offer travel to that destination. Please select from the above list."
             select_planet
     end
+    selected_planet
 end
 
 def display_selected_planet(planet_name)
@@ -58,13 +59,14 @@ def ending_options
 end
 
 def user_intro
+    user_array = []
     puts "Please tell us about yourself."
     puts "What is your name?"
     user_name = gets.chomp
     puts "How old are you?"
     user_age = gets.chomp.to_i
     user_location = user_planet
-    User.create(name: user_name, age: user_age, planet_location: user_location)
+    user_array << User.create(name: user_name, age: user_age, planet_location: user_location)
 end
 
 def user_planet
@@ -77,5 +79,41 @@ def user_planet
     else 
         puts "Please enter a planet in the Solar System."
         user_planet
+    end
+end
+
+def current_location
+    user_intro.map do |user|
+        user.planet_location
+    end
+end
+
+def current_distance
+    planet = Planet.find_by(name: current_location)
+    planet.distance_from_sun
+end
+
+def destination_name
+    select_planet.name
+end
+
+def destination_distance
+    planet = Planet.find_by(name: destination_name)
+    planet.distance_from_sun
+end
+
+def distance
+    total = destination_distance + current_distance
+    puts "Your total travel distance to #{destination_name} is #{total} miles. Please be aware that this is not a direct flight, and there will be a layover at the Sun."
+end
+
+
+def distance_from_selection
+    puts "Would you like to see the distance to your selection? Y/N"
+    user_input = gets.chomp.downcase
+    if user_input == "y" || "yes"
+        distance
+    else
+    ending_options
     end
 end
