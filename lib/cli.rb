@@ -1,4 +1,8 @@
+ActiveRecord::Base.logger = nil
+
+
 def welcome
+    system("clear")
     puts "Welcome to the Milky Way Travel Agency!"
     puts "Interstellar travel at your fingertips."
 end
@@ -15,6 +19,7 @@ end
 def select_planet
     puts "Please enter your preferred destination"
     user_input = gets.chomp.capitalize
+    system("clear")
     selected_planet = Planet.find_by(name: user_input)
     if selected_planet
         display_selected_planet(user_input)
@@ -40,6 +45,7 @@ def ending_options
 
     user_input = gets.chomp
     if user_input == "1"
+        system("clear")
         planets_display
         select_planet
         ending_options
@@ -48,5 +54,28 @@ def ending_options
     else
         puts "Please make another selection."
     ending_options
+    end
+end
+
+def user_intro
+    puts "Please tell us about yourself."
+    puts "What is your name?"
+    user_name = gets.chomp
+    puts "How old are you?"
+    user_age = gets.chomp.to_i
+    user_location = user_planet
+    User.create(name: user_name, age: user_age, planet_location: user_location)
+end
+
+def user_planet
+    puts "What planet in the Solar System do you currently reside on?"
+    user_location = gets.chomp.capitalize
+    solar_planets = Planet.find_by(name: user_location)
+    if solar_planets
+        puts "Thank you!"
+        user_location
+    else 
+        puts "Please enter a planet in the Solar System."
+        user_planet
     end
 end
