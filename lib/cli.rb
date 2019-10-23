@@ -1,5 +1,6 @@
 ActiveRecord::Base.logger = nil
-
+$user_info = nil
+$selected_planet = nil
 
 def welcome
     system("clear")
@@ -20,14 +21,13 @@ def select_planet
     puts "Please enter your preferred destination"
     user_input = gets.chomp.capitalize
     system("clear")
-    selected_planet = Planet.find_by(name: user_input)
-    if selected_planet
+    $selected_planet = Planet.find_by(name: user_input)
+    if $selected_planet
         display_selected_planet(user_input)
     else  
         puts "We currently do not offer travel to that destination. Please select from the above list."
             select_planet
     end
-    selected_planet
 end
 
 def display_selected_planet(planet_name)
@@ -43,6 +43,7 @@ def ending_options
     puts "What would you like to do now? Please select 1 or 2."
     puts "1. Go back to Planet Menu."
     puts "2. Exit Travel Agency."
+ 
 
     user_input = gets.chomp
     if user_input == "1"
@@ -59,14 +60,13 @@ def ending_options
 end
 
 def user_intro
-    user_array = []
     puts "Please tell us about yourself."
     puts "What is your name?"
     user_name = gets.chomp
     puts "How old are you?"
     user_age = gets.chomp.to_i
     user_location = user_planet
-    user_array << User.create(name: user_name, age: user_age, planet_location: user_location)
+    $user_info = User.create(name: user_name, age: user_age, planet_location: user_location)
 end
 
 def user_planet
@@ -83,9 +83,7 @@ def user_planet
 end
 
 def current_location
-    user_intro.map do |user|
-        user.planet_location
-    end
+    $user_info.planet_location
 end
 
 def current_distance
@@ -94,7 +92,7 @@ def current_distance
 end
 
 def destination_name
-    select_planet.name
+    $selected_planet.name
 end
 
 def destination_distance
@@ -115,5 +113,12 @@ def distance_from_selection
         distance
     else
     ending_options
+    end
+end
+
+def user_id
+    $user_info.map do |user|
+        user.id
+        puts user.id
     end
 end
