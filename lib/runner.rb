@@ -1,11 +1,4 @@
-welcome
+cli = Cli.new
 
-user_intro
+cli.welcome
 
-planets_display
-
-select_planet
-
-distance_from_selection
-
-ending_options
