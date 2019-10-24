@@ -96,11 +96,11 @@ class Cli
         puts "Please tell us about yourself.".colorize(:yellow)
         puts ""
         puts "What is your name?"
-        puts ""
         user_name = gets.chomp
-        puts "How old are you?"
         puts ""
+        puts "How old are you?"
         user_age = gets.chomp.to_i
+        puts ""
         user_location = user_planet
         @user_info = User.create(name: user_name, age: user_age, planet_location: user_location)
     end
