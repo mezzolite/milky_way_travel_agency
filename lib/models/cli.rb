@@ -83,6 +83,7 @@ class Cli
             puts ""
             puts ""
             puts "Thank you for visiting Milky Way Travel Agency. Good Bye!".colorize(:magenta)
+            system("imgcat ./lib/images/purple_solarsystem.jpg")
         elsif user_input == "2"
             display_favorites
         else
@@ -139,7 +140,8 @@ class Cli
 
     def distance
         @distance_total = destination_distance + current_distance
-        puts "Your total travel distance to " + "#{destination_name}".colorize(:light_green) + " is " + "#{distance_total}".colorize(:green) + " miles. Please be aware that this is not a direct flight, and there will be a layover at the Sun."
+        delimited_total = distance_total.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+        puts "Your total travel distance to " + "#{destination_name}".colorize(:light_green) + " is " + "#{delimited_total}".colorize(:green) + " miles. Please be aware that this is not a direct flight, and there will be a layover at the Sun."
     end
 
 
