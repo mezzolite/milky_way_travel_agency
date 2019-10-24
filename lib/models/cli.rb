@@ -110,7 +110,7 @@ class Cli
         elsif user_input == "3"
             puts ""
             puts ""
-            puts "Thank you for visiting Milky Way Travel Agency. Good Bye!".colorize(:magenta)
+            puts "Thank you for visiting the Milky Way Travel Agency. Good Bye!".colorize(:magenta)
             system("imgcat ./lib/images/purple_solarsystem.jpg")
         elsif user_input == "2"
             display_favorites
