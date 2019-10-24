@@ -31,6 +31,34 @@ class Cli
         puts ""
     end
 
+    def user_intro
+        puts ""
+        puts "Please tell us about yourself.".colorize(:yellow)
+        puts ""
+        puts "What is your name?"
+        user_name = gets.chomp
+        puts ""
+        puts "How old are you?"
+        user_age = gets.chomp.to_i
+        puts ""
+        user_location = user_planet
+        @user_info = User.create(name: user_name, age: user_age, planet_location: user_location)
+    end
+
+    def user_planet
+        puts "What planet in the Solar System do you currently reside on?"
+        user_location = gets.chomp.capitalize
+        solar_planets = Planet.find_by(name: user_location)
+        if solar_planets
+            puts ""
+            user_location
+        else 
+            puts ""
+            puts "Please enter a planet in the Solar System.".colorize(:red)
+            user_planet
+        end
+    end
+
 
     def planets_display
         system("clear")
@@ -71,7 +99,7 @@ class Cli
         puts ""
         puts "*---*---o---*---~---o---~---*---o---*---*"
         puts "--*---*---o---*---~---o---~---*---o---*--"
-        puts "What would you like to do now? Please select 1 or 2.".colorize(:yellow)
+        puts "What would you like to do now? Please select 1, 2, or 3.".colorize(:yellow)
         puts "1. Go back to Planet Menu."
         puts "2. View your Favorite Planets."
         puts "3. Exit Travel Agency."
@@ -82,7 +110,8 @@ class Cli
         elsif user_input == "3"
             puts ""
             puts ""
-            puts "Thank you for visiting Milky Way Travel Agency. Good Bye!".colorize(:magenta)
+            puts "Thank you for visiting the Milky Way Travel Agency. Good Bye!".colorize(:magenta)
+            system("imgcat ./lib/images/purple_solarsystem.jpg")
         elsif user_input == "2"
             display_favorites
         else
@@ -91,34 +120,7 @@ class Cli
         end
     end
 
-    def user_intro
-        puts ""
-        puts "Please tell us about yourself.".colorize(:yellow)
-        puts ""
-        puts "What is your name?"
-        user_name = gets.chomp
-        puts ""
-        puts "How old are you?"
-        user_age = gets.chomp.to_i
-        puts ""
-        user_location = user_planet
-        @user_info = User.create(name: user_name, age: user_age, planet_location: user_location)
-    end
-
-    def user_planet
-        puts "What planet in the Solar System do you currently reside on?"
-        user_location = gets.chomp.capitalize
-        solar_planets = Planet.find_by(name: user_location)
-        if solar_planets
-            puts ""
-            user_location
-        else 
-            puts ""
-            puts "Please enter a planet in the Solar System.".colorize(:red)
-            user_planet
-        end
-    end
-
+  
     def current_location
         user_info.planet_location
     end
@@ -139,7 +141,8 @@ class Cli
 
     def distance
         @distance_total = destination_distance + current_distance
-        puts "Your total travel distance to " + "#{destination_name}".colorize(:light_green) + " is " + "#{distance_total}".colorize(:green) + " miles. Please be aware that this is not a direct flight, and there will be a layover at the Sun."
+        delimited_total = distance_total.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+        puts "Your total travel distance to " + "#{destination_name}".colorize(:light_green) + " is " + "#{delimited_total}".colorize(:green) + " miles. Please be aware that this is not a direct flight, and there will be a layover at the Sun."
     end
 
 
@@ -198,7 +201,6 @@ class Cli
             favorites
         end
     end
-
 
     def get_user_id
         user_info.id 
