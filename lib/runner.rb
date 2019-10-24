@@ -1,4 +1,5 @@
 cli = Cli.new
 
-# cli.welcome
+cli.welcome
+
 

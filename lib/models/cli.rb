@@ -2,13 +2,14 @@ ActiveRecord::Base.logger = nil
 
 class Cli
 
-    attr_accessor :user_info, :selected_planet, :distance_total, :total_in_years
+    attr_accessor :user_info, :selected_planet, :distance_total, :total_in_years, :favorite_planets
 
     def initialize
         @user_info = nil
         @selected_planet = nil
         @distance_total = nil
         @total_in_years = nil
+        @favorite_planets = []
     end
 
     def welcome
@@ -19,27 +20,29 @@ class Cli
         puts "Interstellar travel at your fingertips.".colorize(:light_red)
         system("imgcat ./lib/images/background.jpg")
         user_intro
+        puts ""
+        main_menu
+    end
+
+    def main_menu
         planets_display
         select_planet
         distance_from_selection
         puts ""
-        display_travel_time
-        puts ""
-        display_arrival_age
     end
+
 
     def planets_display
         system("clear")
-        puts "Thank you!"
-        puts "*---*---o---*---~---o---~---*---o---*---*"
-        puts "--*---*---o---*---~---o---~---*---o---*--"
-        puts "Here are all of the available destinations:".colorize(:green)
-        puts ""
         Planet.all.map do |planet|
             planet.name 
             puts planet.name
             system("imgcat ./lib/images/#{planet.image}")
         end
+        puts "*---*---o---*---~---o---~---*---o---*---*"
+        puts "--*---*---o---*---~---o---~---*---o---*--"
+        puts "Here are all of the available destinations!".colorize(:green)
+        puts ""
     end
 
     def select_planet
@@ -70,17 +73,18 @@ class Cli
         puts "--*---*---o---*---~---o---~---*---o---*--"
         puts "What would you like to do now? Please select 1 or 2.".colorize(:yellow)
         puts "1. Go back to Planet Menu."
-        puts "2. Exit Travel Agency."
+        puts "2. View your Favorite Planets."
+        puts "3. Exit Travel Agency."
         user_input = gets.chomp
         if user_input == "1"
             system("clear")
-            planets_display
-            select_planet
-            ending_options
-        elsif user_input == "2"
+            main_menu
+        elsif user_input == "3"
             puts ""
             puts ""
             puts "Thank you for visiting Milky Way Travel Agency. Good Bye!".colorize(:magenta)
+        elsif user_input == "2"
+            display_favorites
         else
             puts "Please make another selection."
         ending_options
@@ -92,8 +96,10 @@ class Cli
         puts "Please tell us about yourself.".colorize(:yellow)
         puts ""
         puts "What is your name?"
+        puts ""
         user_name = gets.chomp
         puts "How old are you?"
+        puts ""
         user_age = gets.chomp.to_i
         user_location = user_planet
         @user_info = User.create(name: user_name, age: user_age, planet_location: user_location)
@@ -145,8 +151,10 @@ class Cli
         user_input = gets.chomp.downcase
         if user_input == "y" || user_input == "yes"
             distance
+            puts ""
+            display_travel_time
         else
-            ending_options
+            display_travel_time
         end
     end
 
@@ -162,8 +170,10 @@ class Cli
         user_input = gets.chomp.downcase
         if user_input == "y" || user_input == "yes"
             travel_time
+            puts ""
+            display_arrival_age
         else
-            ending_options
+            display_arrival_age
         end
     end
 
@@ -177,21 +187,49 @@ class Cli
         if user_input == "y" || user_input == "yes"
             if total_in_years.round == 0
                 puts "You will be " + "#{user_age}".colorize(:green) + " years old."
-                ending_options
+                puts ""
+                favorites
             else
-                puts "You will be " + "#{user_age * total_in_years.round}".colorize(:green) + " years old."
-                ending_options
+                puts "You will be " + "#{user_age + total_in_years.round}".colorize(:green) + " years old."
+                puts ""
+                favorites
             end
         else 
+            favorites
+        end
+    end
+
+
+    def get_user_id
+        user_info.id 
+    end
+
+    def selected_planet_id
+        selected_planet.id
+    end
+
+    def favorites
+        puts "Would you like to save this planet to your Favorites? Y/N"
+        user_input = gets.chomp.downcase
+        if user_input == "y" || user_input == "yes"
+            @favorite_planets << Favorite.create(user_id: get_user_id, planet_id: selected_planet_id)
             ending_options
+        else
+            ending_options    
         end
     end
 
-
-    def user_id
-        user_info.map do |user|
-            user.id
-            puts user.id
+    def display_favorites
+        system("clear")
+        user_info.planets.reload.map do|planet|
+            puts "Name: ".colorize(:light_blue) + "#{planet.name}"
+            puts "Atmosphere: ".colorize(:light_blue) + "#{planet.atmosphere}"
+            puts "Description: ".colorize(:light_blue) + "#{planet.description}"
+            system("imgcat ./lib/images/#{planet.image}")
         end
-    end
+        ending_options
+    end 
+
+    
 end
+
