@@ -2,7 +2,7 @@ ActiveRecord::Base.logger = nil
 
 class Cli
 
-    attr_accessor :user_info, :selected_planet, :distance_total, :total_in_years, :favorite_planets
+    attr_accessor :user_info, :selected_planet, :distance_total, :total_in_years, :favorite_planets, :delimited_total, :total_in_days
 
     def initialize
         @user_info = nil
@@ -10,6 +10,8 @@ class Cli
         @distance_total = nil
         @total_in_years = nil
         @favorite_planets = []
+        @delimited_total = nil
+        @total_in_days = nil
     end
 
     def welcome
@@ -143,7 +145,10 @@ class Cli
 
     def distance
         @distance_total = destination_distance + current_distance
-        delimited_total = distance_total.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+        @delimited_total = distance_total.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+    end
+
+    def print_distance
         puts "Your total travel distance to " + "#{destination_name}".colorize(:light_green) + " is " + "#{delimited_total}".colorize(:green) + " miles. Please be aware that this is not a direct flight, and there will be a layover at the Sun."
     end
 
@@ -154,6 +159,7 @@ class Cli
         user_input = gets.chomp.downcase
         if user_input == "y" || user_input == "yes"
             distance
+            print_distance
             puts ""
             display_travel_time
         elsif user_input == "n" || user_input == "no"
@@ -166,8 +172,11 @@ class Cli
 
     def travel_time
         total_in_hours = distance_total / 80000
-        total_in_days = total_in_hours.to_f  / 24
+        @total_in_days = total_in_hours.to_f  / 24
         @total_in_years = total_in_days.to_f / 365
+    end
+
+    def print_travel_time
         puts "Your travel time would be " + "#{total_in_days.round(1)}".colorize(:green) + " days or " + "#{total_in_years.round(1)}".colorize(:green) + " years."
     end
 
@@ -175,7 +184,9 @@ class Cli
         puts "Would you like to see the travel time to your selected planet? Y/N"
         user_input = gets.chomp.downcase
         if user_input == "y" || user_input == "yes"
+            distance
             travel_time
+            print_travel_time
             puts ""
             display_arrival_age
         elsif user_input == "n" || user_input == "no"
@@ -199,6 +210,8 @@ class Cli
                 puts ""
                 favorites
             else
+                distance
+                travel_time
                 puts "You will be " + "#{user_age + total_in_years.round}".colorize(:green) + " years old."
                 puts ""
                 favorites
