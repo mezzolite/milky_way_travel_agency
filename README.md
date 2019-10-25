@@ -2,8 +2,10 @@
    
    _Interstellar travel at your fingertips!_
    ![background](/lib/images/background.jpg)
-                                  
+   
    **About:** Mod1 project by Tatiana and Mez. Use our app to find information on major planets in our Solar System.
+   
+   **Demo:** https://youtu.be/axz_wac-B2I
    
    **Installation instructions:**
 
