@@ -93,6 +93,8 @@ class Cli
             puts "Atmosphere: ".colorize(:light_blue) + "#{selected_planet.atmosphere}"
             puts "Description: ".colorize(:light_blue) + "#{selected_planet.description}"
             system("imgcat ./lib/images/#{selected_planet.image}")
+            puts "*---*---o---*---~---o---~---*---o---*---*"
+            puts "--*---*---o---*---~---o---~---*---o---*--"
     end
 
     def ending_options
@@ -147,8 +149,6 @@ class Cli
 
 
     def distance_from_selection
-        puts "*---*---o---*---~---o---~---*---o---*---*"
-        puts "--*---*---o---*---~---o---~---*---o---*--"
         puts ""
         puts "Would you like to see the distance to your selection? Y/N"
         user_input = gets.chomp.downcase
@@ -156,8 +156,11 @@ class Cli
             distance
             puts ""
             display_travel_time
-        else
+        elsif user_input == "n" || user_input == "no"
             display_travel_time
+        else
+            puts "Please enter Y or N."
+            distance_from_selection
         end
     end
 
@@ -175,8 +178,11 @@ class Cli
             travel_time
             puts ""
             display_arrival_age
-        else
+        elsif user_input == "n" || user_input == "no"
             display_arrival_age
+        else
+            puts "Please enter Y or N."
+            display_travel_time
         end
     end
 
@@ -197,8 +203,11 @@ class Cli
                 puts ""
                 favorites
             end
-        else 
+        elsif user_input == "n" || user_input == "no"
             favorites
+        else 
+            puts "Please enter Y or N."
+            display_arrival_age
         end
     end
 
